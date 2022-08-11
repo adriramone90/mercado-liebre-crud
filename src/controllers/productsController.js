@@ -45,14 +45,13 @@ const controller = {
             }
         });
 
+		console.log(req.file.filename)
 
         let newProduct = {
             ...req.body,
             id:lastId + 1,
-            image: "default.jpg"
+            image: req.file ? req.file.filename : "default.jpg",
         }
-
-		
 
         getProducts.push(newProduct)
 
@@ -67,8 +66,6 @@ const controller = {
 
 		let productoSolicitado = getProducts.find((producto) => producto.id === idProducto);
 
-		
-
 		res.render("product-edit-form",{
 			producto:productoSolicitado
 		})
@@ -77,15 +74,6 @@ const controller = {
 	update: (req, res) => {
 		let idProducto = +req.params.id;
 
-		
-
-		/*"name": "pend",
-        "price": "12",
-        "discount": "123",
-        "category": "in-sale",
-        "description": "asda",
-        "id": 21,
-        "image": "default.jpg"*/
 
         getProducts.forEach(producto => {
             if(producto.id === idProducto){
@@ -95,7 +83,6 @@ const controller = {
 				producto.category = req.body.category
                 producto.description = req.body.description
                 producto.image = "default.jpg"
-                
             }
         })
 
@@ -118,7 +105,6 @@ const controller = {
 
         writeProducts(getProducts);
 
-		
 
         res.redirect("/products")
 	}
